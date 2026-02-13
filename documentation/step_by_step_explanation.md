@@ -133,4 +133,4 @@ This handles the "Auto-loading" magic. It uses the modern **Intersection Observe
 
 **Happy Studying!**
 
-Copyright @Shamiul 2026
+Copyright Shamiul @2026
