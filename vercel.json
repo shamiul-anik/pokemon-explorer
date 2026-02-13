@@ -23,12 +23,12 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/$1",
+      "dest": "/client/$1",
       "continue": true
     },
     {
       "src": "/.*",
-      "dest": "/index.html"
+      "dest": "/client/index.html"
     }
   ]
 }
