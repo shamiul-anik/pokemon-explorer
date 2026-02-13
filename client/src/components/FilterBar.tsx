@@ -41,7 +41,7 @@ export default function FilterBar() {
       <FilterList sx={{ color: "text.secondary", fontSize: 28 }} />
 
       <TextField
-        label="Search by name"
+        label="Search by Name"
         variant="outlined"
         size="small"
         value={nameStartedWith}
