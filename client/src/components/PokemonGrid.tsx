@@ -9,6 +9,8 @@ import {
   Alert,
 } from "@mui/material";
 import { CatchingPokemon, Refresh, SearchOff } from "@mui/icons-material";
+import { useEffect } from "react";
+import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import { usePokemons } from "../hooks/usePokemons";
 import PokemonCard from "./PokemonCard";
 
@@ -30,6 +32,11 @@ function SkeletonCard() {
   );
 }
 
+const OBSERVER_OPTIONS = {
+  threshold: 0.1,
+  rootMargin: "100px",
+};
+
 export default function PokemonGrid() {
   const {
     data,
@@ -41,6 +48,14 @@ export default function PokemonGrid() {
     fetchNextPage,
     isFetchingNextPage,
   } = usePokemons();
+
+  const { ref, isIntersecting } = useIntersectionObserver(OBSERVER_OPTIONS);
+
+  useEffect(() => {
+    if (isIntersecting && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [isIntersecting, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Flatten the pages into a single array of Pokémon
   const pokemons = data?.pages.flatMap((page) => page.data) ?? [];
@@ -144,34 +159,8 @@ export default function PokemonGrid() {
           ))}
       </Grid>
 
-      {/* Load More Button */}
-      {hasNextPage && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            sx={{
-              borderRadius: 4,
-              px: 4,
-              py: 1.5,
-              fontSize: "1rem",
-              background: (theme) =>
-                theme.palette.mode === "dark"
-                  ? "linear-gradient(135deg, #6C63FF, #FF6584)"
-                  : "linear-gradient(135deg, #5B52E0, #FF4D6D)",
-              boxShadow: "0 8px 20px rgba(108, 99, 255, 0.3)",
-              transition: "transform 0.2s",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            {isFetchingNextPage ? "Catching more..." : "Load More Pokémon"}
-          </Button>
-        </Box>
-      )}
+      {/* Sentinel for infinite scroll */}
+      <div ref={ref} style={{ height: 20, marginTop: 20 }} />
     </Box>
   );
 }

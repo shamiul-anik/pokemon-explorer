@@ -22,7 +22,7 @@ A modern full-stack Pokémon Explorer built with **React + Vite** and **Express*
 - **Rate limiting** — 100 req / 15 min per IP (Express)
 - **Zod validation** — server validates query params; client validates API responses
 - **Responsive grid** — 1–4 columns adapting to screen size
-- **Infinite Pagination** — Load More button with 12 items per page
+- **Infinite Pagination** — Automatic scroll loading (limit 12) with skeleton skeletons
 
 ---
 
