@@ -12,7 +12,7 @@ A modern full-stack Pokémon Explorer built with **React + Vite** and **Express*
 
 ## Features
 
-- **20 Pokémon** with official artwork from PokeAPI sprites
+- **151 Pokémon** (Gen 1) with official artwork from PokeAPI sprites
 - **Filter by name** — type-ahead prefix search (e.g. "Pi" → Pikachu)
 - **Filter by category** — dropdown with 18 types (Fire, Water, Grass, etc.)
 - **Combined filters** — name + category simultaneously
@@ -142,7 +142,7 @@ GET /api/pokemons?nameStartedWith=Ch&category=Fire   → Charmander, Charmeleon,
       "category": "Electric"
     }
   ],
-  "total": 1
+  "total": 151
 }
 ```
 
