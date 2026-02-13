@@ -136,6 +136,12 @@ export default function PokemonGrid() {
             <PokemonCard pokemon={pokemon} index={index} />
           </Grid>
         ))}
+        {isFetchingNextPage &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <Grid key={`skeleton-${i}`} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              <SkeletonCard />
+            </Grid>
+          ))}
       </Grid>
 
       {/* Load More Button */}
