@@ -14,6 +14,12 @@ export const pokemonQuerySchema = z.object({
       }),
     })
     .optional(),
+  page: z.coerce.number().min(1, "page must be at least 1").default(1),
+  limit: z.coerce
+    .number()
+    .min(1, "limit must be at least 1")
+    .max(100, "limit must be at most 100")
+    .default(12),
 });
 
 export type PokemonQuery = z.infer<typeof pokemonQuerySchema>;

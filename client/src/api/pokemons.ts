@@ -7,8 +7,12 @@ import {
 
 export async function fetchPokemons(
   filters?: PokemonFilters,
+  pageParam = 1,
 ): Promise<PokemonResponse> {
   const params = new URLSearchParams();
+
+  params.set("page", String(pageParam));
+  params.set("limit", "12");
 
   if (filters?.nameStartedWith) {
     params.set("nameStartedWith", filters.nameStartedWith);

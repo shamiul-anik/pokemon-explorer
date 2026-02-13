@@ -31,9 +31,21 @@ function SkeletonCard() {
 }
 
 export default function PokemonGrid() {
-  const { data, isLoading, isError, error, refetch } = usePokemons();
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = usePokemons();
 
-  // Loading state with skeleton cards
+  // Flatten the pages into a single array of Pokémon
+  const pokemons = data?.pages.flatMap((page) => page.data) ?? [];
+
+  // Loading state with skeleton cards (initial load only)
   if (isLoading) {
     return (
       <Grid container spacing={3}>
@@ -79,7 +91,7 @@ export default function PokemonGrid() {
   }
 
   // Empty state
-  if (!data?.data.length) {
+  if (!pokemons.length) {
     return (
       <Box
         sx={{
@@ -114,17 +126,46 @@ export default function PokemonGrid() {
       >
         <CatchingPokemon fontSize="small" />
         <Typography variant="body2">
-          Showing {data.total} Pokémon
+          Showing {pokemons.length} of {data?.pages[0]?.total ?? 0} Pokémon
         </Typography>
       </Box>
 
       <Grid container spacing={3}>
-        {data.data.map((pokemon, index) => (
+        {pokemons.map((pokemon, index) => (
           <Grid key={pokemon.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <PokemonCard pokemon={pokemon} index={index} />
           </Grid>
         ))}
       </Grid>
+
+      {/* Load More Button */}
+      {hasNextPage && (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            sx={{
+              borderRadius: 4,
+              px: 4,
+              py: 1.5,
+              fontSize: "1rem",
+              background: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(135deg, #6C63FF, #FF6584)"
+                  : "linear-gradient(135deg, #5B52E0, #FF4D6D)",
+              boxShadow: "0 8px 20px rgba(108, 99, 255, 0.3)",
+              transition: "transform 0.2s",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          >
+            {isFetchingNextPage ? "Catching more..." : "Load More Pokémon"}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

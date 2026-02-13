@@ -22,6 +22,7 @@ A modern full-stack Pokémon Explorer built with **React + Vite** and **Express*
 - **Rate limiting** — 100 req / 15 min per IP (Express)
 - **Zod validation** — server validates query params; client validates API responses
 - **Responsive grid** — 1–4 columns adapting to screen size
+- **Infinite Pagination** — Load More button with 12 items per page
 
 ---
 
@@ -120,13 +121,15 @@ Returns a list of Pokémon, optionally filtered.
 | `nameStartedWith` | `string` (optional) | Filter by name prefix (case-insensitive)      |
 | `category`        | `string` (optional) | Filter by category (Fire, Water, Grass, etc.) |
 
+| `limit` | `number` (optional) | Items per page (default: 12) |
+| `page` | `number` (optional) | Page number (default: 1) |
+
 **Examples:**
 
 ```
-GET /api/pokemons                                    → All 20 Pokémon
-GET /api/pokemons?nameStartedWith=Pi                 → Pikachu
-GET /api/pokemons?category=Fire                      → Charmander, Charmeleon, Charizard
-GET /api/pokemons?nameStartedWith=Ch&category=Fire   → Charmander, Charmeleon, Charizard
+GET /api/pokemons?page=1&limit=12                    → First 12 items
+GET /api/pokemons?page=2                             → Next 12 items
+GET /api/pokemons?category=Fire                      → All Fire types (paginated)
 ```
 
 **Response:**
@@ -134,15 +137,11 @@ GET /api/pokemons?nameStartedWith=Ch&category=Fire   → Charmander, Charmeleon,
 ```json
 {
   "success": true,
-  "data": [
-    {
-      "id": 25,
-      "name": "Pikachu",
-      "image": "https://raw.githubusercontent.com/.../25.png",
-      "category": "Electric"
-    }
-  ],
-  "total": 151
+  "data": [...],
+  "total": 151,
+  "page": 1,
+  "limit": 12,
+  "nextPage": 2
 }
 ```
 

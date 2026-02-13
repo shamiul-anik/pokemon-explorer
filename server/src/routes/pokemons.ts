@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { pokemons } from "../data/pokemons.js";
-import { pokemonQuerySchema } from "../schemas/query.schema.js";
+import {
+  pokemonQuerySchema,
+  type PokemonQuery,
+} from "../schemas/query.schema.js";
 import { validateQuery } from "../middleware/validate.js";
 
 const router = Router();
 
 router.get("/", validateQuery(pokemonQuerySchema), (req, res) => {
-  const { nameStartedWith, category } = res.locals.validatedQuery as {
-    nameStartedWith?: string;
-    category?: string;
-  };
+  const { nameStartedWith, category, page, limit } = res.locals
+    .validatedQuery as PokemonQuery;
 
   let filtered = [...pokemons];
 
@@ -24,10 +25,18 @@ router.get("/", validateQuery(pokemonQuerySchema), (req, res) => {
     );
   }
 
+  const total = filtered.length;
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const data = filtered.slice(startIndex, endIndex);
+
   res.json({
     success: true,
-    data: filtered,
-    total: filtered.length,
+    data,
+    total,
+    page,
+    limit,
+    nextPage: endIndex < total ? page + 1 : null,
   });
 });
 

@@ -12,6 +12,7 @@ export const PokemonResponseSchema = z.object({
   success: z.boolean(),
   data: z.array(PokemonSchema),
   total: z.number(),
+  nextPage: z.number().nullable(),
 });
 
 // TypeScript types inferred from Zod
