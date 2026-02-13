@@ -11,4 +11,22 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: [
+            "react",
+            "react-dom",
+            "@mui/material",
+            "@mui/icons-material",
+            "@tanstack/react-query",
+            "axios",
+            "zustand",
+          ],
+        },
+      },
+    },
+  },
 });
