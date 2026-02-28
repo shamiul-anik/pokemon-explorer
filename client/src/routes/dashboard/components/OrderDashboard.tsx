@@ -28,6 +28,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { useNavigate } from '@tanstack/react-router';
 import AppBrand from '../../../shared/components/AppBrand';
 import ThemeToggle from '../../../shared/components/ThemeToggle';
@@ -149,6 +150,7 @@ export default function OrderDashboard() {
             <Button
               fullWidth
               variant="contained"
+              startIcon={<ArrowBackRoundedIcon />}
               onClick={() => navigate({ to: '/' })}
               sx={{
                 backgroundColor: 'text.primary',
