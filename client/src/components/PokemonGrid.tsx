@@ -15,7 +15,7 @@ import {
   type SelectChangeEvent,
 } from "@mui/material";
 import { CatchingPokemon, Refresh, SearchOff } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { usePokemons } from "../hooks/usePokemons";
 import { useFilterStore } from "../store/filterStore";
 import PokemonCard from "./PokemonCard";
@@ -46,14 +46,18 @@ export default function PokemonGrid() {
   const nameStartedWith = useFilterStore((s) => s.nameStartedWith);
   const category = useFilterStore((s) => s.category);
 
-  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState<number>(8);
+  const paginationKey = useMemo(
+    () => `${nameStartedWith.trim().toLowerCase()}|${category ?? ""}|${limit}`,
+    [nameStartedWith, category, limit],
+  );
+  const [paginationState, setPaginationState] = useState(() => ({
+    key: paginationKey,
+    page: 1,
+  }));
 
+  const page = paginationState.key === paginationKey ? paginationState.page : 1;
   const { data, isLoading, isError, error, refetch } = usePokemons(page, limit);
-
-  useEffect(() => {
-    setPage(1);
-  }, [nameStartedWith, category, limit]);
 
   const pokemons = data?.data ?? [];
   const total = data?.total ?? 0;
@@ -61,7 +65,10 @@ export default function PokemonGrid() {
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    setPaginationState({
+      key: paginationKey,
+      page: value,
+    });
   };
 
   const handleLimitChange = (event: SelectChangeEvent<number>) => {
