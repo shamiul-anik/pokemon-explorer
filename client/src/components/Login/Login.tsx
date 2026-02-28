@@ -50,7 +50,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
       : "radial-gradient(circle at 14% 18%, rgba(104, 160, 223, 0.28), transparent 38%), radial-gradient(circle at 90% 0%, rgba(106, 163, 227, 0.2), transparent 42%), linear-gradient(180deg, #d9e4f2 0%, #cfdceb 100%)",
 }));
 
-export default function SignIn() {
+export default function Login1() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);

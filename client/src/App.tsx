@@ -6,8 +6,7 @@ import { darkTheme, lightTheme } from "./theme/theme";
 import Layout from "./components/Layout";
 import FilterBar from "./components/FilterBar";
 import PokemonGrid from "./components/PokemonGrid";
-import Login1 from "./components/Login/Login1";
-import Login2 from "./components/Login/Login2";
+import Login1 from "./components/Login/Login";
 import OrderDashboard from "./components/Dashboard/OrderDashboard";
 
 function HomePage() {
@@ -59,14 +58,8 @@ const homeRoute = createRoute({
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/login1",
+  path: "/login",
   component: Login1,
-});
-
-const loginRoute2 = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/login2",
-  component: Login2,
 });
 
 const dashboardRoute = createRoute({
@@ -75,7 +68,7 @@ const dashboardRoute = createRoute({
   component: OrderDashboard,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, loginRoute, loginRoute2, dashboardRoute]);
+const routeTree = rootRoute.addChildren([homeRoute, loginRoute, dashboardRoute]);
 
 export const router = createRouter({ routeTree });
 
