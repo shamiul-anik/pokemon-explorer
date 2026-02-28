@@ -317,7 +317,7 @@ export default function Login1() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => navigate({ to: "/dashboard" })}
+            onClick={() => navigate({ to: "/" })}
             startIcon={<AzureIcon />}
             sx={{
               color: "text.primary",
