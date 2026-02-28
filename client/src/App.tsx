@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { Outlet, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
 import { useThemeStore } from "./store/themeStore";
@@ -21,11 +21,27 @@ function HomePage() {
 
 function RouterThemeShell() {
   const mode = useThemeStore((s) => s.mode);
+  const setSystemMode = useThemeStore((s) => s.setSystemMode);
   const theme = useMemo(() => (mode === "dark" ? darkTheme : lightTheme), [mode]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const applySystemMode = (matches: boolean) => {
+      setSystemMode(matches ? "dark" : "light");
+    };
+
+    applySystemMode(mediaQuery.matches);
+    const handler = (event: MediaQueryListEvent) => applySystemMode(event.matches);
+    mediaQuery.addEventListener("change", handler);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handler);
+    };
+  }, [setSystemMode]);
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       <Outlet />
     </ThemeProvider>
   );

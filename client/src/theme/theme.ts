@@ -18,6 +18,13 @@ const commonOptions: ThemeOptions = {
     borderRadius: 16,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          transition: "background-color 0.25s ease, color 0.25s ease",
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -31,6 +38,13 @@ const commonOptions: ThemeOptions = {
         root: {
           fontWeight: 600,
           letterSpacing: "0.02em",
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
         },
       },
     },
@@ -51,23 +65,24 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#6C63FF",
-      light: "#8B83FF",
-      dark: "#4B44B2",
+      main: "#1F9DFF",
+      light: "#66C1FF",
+      dark: "#0E6FBF",
     },
     secondary: {
-      main: "#FF6584",
-      light: "#FF8FA3",
-      dark: "#CC5069",
+      main: "#38BDF8",
+      light: "#7DD3FC",
+      dark: "#0284C7",
     },
     background: {
-      default: "#0A0E27",
-      paper: "#141833",
+      default: "#01040E",
+      paper: "#061427",
     },
     text: {
-      primary: "#E8E8F0",
-      secondary: "#9A9AB0",
+      primary: "#F4F8FF",
+      secondary: "rgba(206, 224, 246, 0.78)",
     },
+    divider: "rgba(77, 130, 198, 0.28)",
   },
 });
 
@@ -76,23 +91,24 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#5B52E0",
-      light: "#7C74FF",
-      dark: "#3D36A0",
+      main: "#0D6EBA",
+      light: "#4A96D5",
+      dark: "#084C81",
     },
     secondary: {
-      main: "#FF4D6D",
-      light: "#FF7A8F",
-      dark: "#CC3D57",
+      main: "#0F8AD8",
+      light: "#4AB6FF",
+      dark: "#0B5F96",
     },
     background: {
-      default: "#F0F2FF",
-      paper: "#FFFFFF",
+      default: "#DCE5F2",
+      paper: "#EAF1FA",
     },
     text: {
-      primary: "#1A1A2E",
-      secondary: "#6B6B80",
+      primary: "#0E223A",
+      secondary: "rgba(24, 47, 74, 0.72)",
     },
+    divider: "rgba(27, 73, 120, 0.22)",
   },
 });
 
