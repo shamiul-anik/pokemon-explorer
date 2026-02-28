@@ -7,12 +7,20 @@ import {
   CardContent,
   Button,
   Alert,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  type SelectChangeEvent,
 } from "@mui/material";
 import { CatchingPokemon, Refresh, SearchOff } from "@mui/icons-material";
-import { useEffect } from "react";
-import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
+import { useEffect, useState } from "react";
 import { usePokemons } from "../hooks/usePokemons";
+import { useFilterStore } from "../store/filterStore";
 import PokemonCard from "./PokemonCard";
+
+const PAGE_SIZE_OPTIONS = [8, 20, 40, 60, 80, 100] as const;
 
 function SkeletonCard() {
   return (
@@ -32,35 +40,32 @@ function SkeletonCard() {
   );
 }
 
-const OBSERVER_OPTIONS = {
-  threshold: 0.1,
-  rootMargin: "100px",
-};
-
 export default function PokemonGrid() {
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = usePokemons();
+  const nameStartedWith = useFilterStore((s) => s.nameStartedWith);
+  const category = useFilterStore((s) => s.category);
 
-  const { ref, isIntersecting } = useIntersectionObserver(OBSERVER_OPTIONS);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState<number>(8);
+
+  const { data, isLoading, isError, error, refetch } = usePokemons(page, limit);
 
   useEffect(() => {
-    if (isIntersecting && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [isIntersecting, hasNextPage, isFetchingNextPage, fetchNextPage]);
+    setPage(1);
+  }, [nameStartedWith, category, limit]);
 
-  // Flatten the pages into a single array of Pokémon
-  const pokemons = data?.pages.flatMap((page) => page.data) ?? [];
+  const pokemons = data?.data ?? [];
+  const total = data?.total ?? 0;
+  const shownCount = Math.min(page * limit, total);
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  // Loading state with skeleton cards (initial load only)
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const handleLimitChange = (event: SelectChangeEvent<number>) => {
+    setLimit(Number(event.target.value));
+  };
+
   if (isLoading) {
     return (
       <Grid container spacing={3}>
@@ -73,7 +78,6 @@ export default function PokemonGrid() {
     );
   }
 
-  // Error state
   if (isError) {
     return (
       <Box
@@ -91,7 +95,7 @@ export default function PokemonGrid() {
         >
           {error instanceof Error
             ? error.message
-            : "Failed to fetch Pokémon data. Please try again."}
+            : "Failed to fetch Pokemon data. Please try again."}
         </Alert>
         <Button
           variant="contained"
@@ -105,7 +109,6 @@ export default function PokemonGrid() {
     );
   }
 
-  // Empty state
   if (!pokemons.length) {
     return (
       <Box
@@ -119,7 +122,7 @@ export default function PokemonGrid() {
         }}
       >
         <SearchOff sx={{ fontSize: 64, opacity: 0.5 }} />
-        <Typography variant="h6">No Pokémon found</Typography>
+        <Typography variant="h6">No Pokemon found</Typography>
         <Typography variant="body2">
           Try adjusting your search or filter criteria.
         </Typography>
@@ -127,7 +130,6 @@ export default function PokemonGrid() {
     );
   }
 
-  // Data state
   return (
     <Box>
       <Box
@@ -137,30 +139,52 @@ export default function PokemonGrid() {
           gap: 1,
           mb: 3,
           color: "text.secondary",
+          flexWrap: "wrap",
         }}
       >
         <CatchingPokemon fontSize="small" />
         <Typography variant="body2">
-          Showing {pokemons.length} of {data?.pages[0]?.total ?? 0} Pokémon
+          Showing {shownCount} of {total} Pokemon
         </Typography>
+
+        <FormControl size="small" sx={{ ml: "auto", minWidth: 130 }}>
+          <InputLabel id="items-per-page-label">Items</InputLabel>
+          <Select<number>
+            labelId="items-per-page-label"
+            value={limit}
+            label="Items"
+            onChange={handleLimitChange}
+          >
+            {PAGE_SIZE_OPTIONS.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
 
       <Grid container spacing={3}>
-        {pokemons.map((pokemon, index) => (
+        {pokemons?.map((pokemon, index) => (
           <Grid key={pokemon.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <PokemonCard pokemon={pokemon} index={index} />
           </Grid>
         ))}
-        {isFetchingNextPage &&
-          Array.from({ length: 4 }).map((_, i) => (
-            <Grid key={`skeleton-${i}`} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <SkeletonCard />
-            </Grid>
-          ))}
       </Grid>
 
-      {/* Sentinel for infinite scroll */}
-      <div ref={ref} style={{ height: 20, marginTop: 20 }} />
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+          shape="rounded"
+          showFirstButton
+          showLastButton
+        />
+      </Box>
     </Box>
   );
 }
+
+

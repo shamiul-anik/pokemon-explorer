@@ -7,12 +7,13 @@ import {
 
 export async function fetchPokemons(
   filters?: PokemonFilters,
-  pageParam = 1,
+  page = 1,
+  limit = 8,
 ): Promise<PokemonResponse> {
   const params = new URLSearchParams();
 
-  params.set("page", String(pageParam));
-  params.set("limit", "12");
+  params.set("page", String(page));
+  params.set("limit", String(limit));
 
   if (filters?.nameStartedWith) {
     params.set("nameStartedWith", filters.nameStartedWith);
@@ -27,3 +28,4 @@ export async function fetchPokemons(
   const validated = PokemonResponseSchema.parse(data);
   return validated;
 }
+
