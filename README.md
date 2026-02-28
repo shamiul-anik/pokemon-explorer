@@ -1,6 +1,6 @@
-# Pokémon Explorer
+# Pokemon Explorer
 
-A modern full-stack Pokémon Explorer built with **React + Vite** and **Express**, featuring a sleek dark/light UI, real-time filtering, and robust caching.
+A full-stack TypeScript monorepo for browsing the original 151 Pokemon, with a modern MUI UI, route-based pages, and an Express API.
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
@@ -8,155 +8,186 @@ A modern full-stack Pokémon Explorer built with **React + Vite** and **Express*
 ![Express](https://img.shields.io/badge/Express-5-000000?logo=express)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
----
-
 ## Features
 
-- **151 Pokémon** (Gen 1) with official artwork from PokeAPI sprites
-- **Filter by name** — type-ahead prefix search (e.g. "Pi" → Pikachu)
-- **Filter by category** — dropdown with 18 types (Fire, Water, Grass, etc.)
-- **Combined filters** — name + category simultaneously
-- **Dark / Light mode** — toggle with sessionStorage persistence via Zustand
-- **Skeleton loaders** — smooth loading states powered by TanStack Query
-- **Error handling** — retry button on API failures
-- **Rate limiting** — 100 req / 15 min per IP (Express)
-- **Zod validation** — server validates query params; client validates API responses
-- **Responsive grid** — 1–4 columns adapting to screen size
-- **Infinite Pagination** — Automatic scroll loading (limit 12) with skeleton skeletons
+- Home page with Pokemon catalog (`/`)
+- Login page with client-side Zod validation (`/login`)
+- Dashboard demo page (`/dashboard`)
+- Name prefix search with debounce
+- Category filter (18 Pokemon types)
+- Server-side pagination with client-side page size control
+- Skeleton loading, empty state, and retry on errors
+- Dark/light theming with Zustand + `localStorage` persistence
+- Theme adapts to system preference when set to `system`
+- React Query caching and background state management
+- Express API with query validation via Zod
+- Express rate limiting and health endpoint
 
----
+## Tech Stack
 
-## Technology Stack
+### Client
 
-| Layer          | Technologies                                                       |
-| -------------- | ------------------------------------------------------------------ |
-| **Frontend**   | React 19, Vite 7, TypeScript, Material UI 7                        |
-| **State**      | Zustand (theme + filters), TanStack Query (server state + caching) |
-| **HTTP**       | Axios with error interceptor                                       |
-| **Validation** | Zod (client + server)                                              |
-| **Backend**    | Express 5, TypeScript, cors                                        |
-| **Security**   | express-rate-limit, Zod query validation                           |
-| **Dev**        | concurrently, tsx watch, Vite proxy                                |
+- React 19 + Vite
+- TypeScript
+- Material UI (`@mui/material`, `@mui/icons-material`, `@mui/joy`)
+- TanStack Router
+- TanStack Query
+- Zustand
+- Axios
+- Zod
 
----
+### Server
+
+- Node.js + Express 5
+- TypeScript
+- Zod
+- express-rate-limit
+- cors
+
+### Workspace / Tooling
+
+- pnpm workspaces
+- concurrently (run client and server together)
 
 ## Project Structure
 
-```
+```text
 pokemon-explorer/
-├── package.json               # Root — runs both servers via concurrently
-├── client/                    # React + Vite frontend
-│   ├── src/
-│   │   ├── api/               # Axios instance & fetchPokemons()
-│   │   ├── components/        # Layout, ThemeToggle, FilterBar, PokemonCard, PokemonGrid
-│   │   ├── hooks/             # usePokemons (TanStack Query)
-│   │   ├── store/             # Zustand stores (theme, filters)
-│   │   ├── theme/             # MUI theme config & category colors
-│   │   ├── types/             # Zod schemas & TypeScript types
-│   │   ├── App.tsx            # Root component
-│   │   └── main.tsx           # Entry with QueryClientProvider
-│   └── vite.config.ts         # Dev proxy /api → localhost:3000
-├── server/                    # Express backend
-│   └── src/
-│       ├── data/              # 20 Pokémon entries
-│       ├── schemas/           # Zod query validation
-│       ├── middleware/        # Rate limiter, validation
-│       ├── routes/            # GET /api/pokemons
-│       └── index.ts           # Server entry
-└── .gitignore
+|- client/
+|  |- src/
+|  |  |- app/
+|  |  |  `- router.tsx
+|  |  |- assets/
+|  |  |- routes/
+|  |  |  |- home/
+|  |  |  |  |- components/
+|  |  |  |  |- hooks/
+|  |  |  |  `- store/
+|  |  |  |- login/
+|  |  |  |  `- components/
+|  |  |  `- dashboard/
+|  |  |     `- components/
+|  |  `- shared/
+|  |     |- api/
+|  |     |- components/
+|  |     |- store/
+|  |     |- theme/
+|  |     `- types/
+|  |- package.json
+|  `- vite.config.ts
+|- server/
+|  |- src/
+|  |  |- data/
+|  |  |- middleware/
+|  |  |- routes/
+|  |  |- schemas/
+|  |  `- index.ts
+|  `- package.json
+|- package.json
+`- pnpm-workspace.yaml
 ```
 
----
+## Routing
+
+The client uses TanStack Router with the following routes:
+
+- `/` -> Home (filters + Pokemon grid)
+- `/login` -> Login UI
+- `/dashboard` -> Order dashboard UI
 
 ## Getting Started
 
 ### Prerequisites
 
-- **Node.js** ≥ 18
-- **npm** ≥ 9
+- Node.js 18+
+- pnpm 10+
 
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/pokemon-explorer.git
-cd pokemon-explorer
-
-# Install all dependencies (root + client + server)
-npm install
-npm run install:all
-```
-
-### Development
+### Install
 
 ```bash
-npm run dev
+pnpm install
 ```
 
-This starts **both servers concurrently**:
-
-| Service | URL                   | Description      |
-| ------- | --------------------- | ---------------- |
-| Client  | http://localhost:5173 | React app (Vite) |
-| Server  | http://localhost:3000 | Express API      |
-
-> Vite automatically proxies `/api/*` requests to the Express server.
-
-### Production Build
+### Run in development
 
 ```bash
-npm run build
+pnpm dev
 ```
 
----
+This starts both apps:
 
-## API Reference
+- Client: `http://localhost:5173`
+- Server: `http://localhost:3000`
+
+Vite proxies `/api/*` from client to server.
+
+## Scripts
+
+### Root
+
+- `pnpm dev` - run server and client concurrently
+- `pnpm build` - build server then client
+- `pnpm install:all` - install workspace dependencies
+
+### Client (`client/package.json`)
+
+- `pnpm --dir client dev`
+- `pnpm --dir client build`
+- `pnpm --dir client lint`
+- `pnpm --dir client preview`
+
+### Server (`server/package.json`)
+
+- `pnpm --dir server dev`
+- `pnpm --dir server build`
+- `pnpm --dir server start`
+
+## API
 
 ### `GET /api/pokemons`
 
-Returns a list of Pokémon, optionally filtered.
+Returns paginated Pokemon data from the local dataset (151 records).
 
-| Parameter         | Type                | Description                                   |
-| ----------------- | ------------------- | --------------------------------------------- |
-| `nameStartedWith` | `string` (optional) | Filter by name prefix (case-insensitive)      |
-| `category`        | `string` (optional) | Filter by category (Fire, Water, Grass, etc.) |
+#### Query parameters
 
-| `limit` | `number` (optional) | Items per page (default: 12) |
-| `page` | `number` (optional) | Page number (default: 1) |
+- `nameStartedWith` (optional, string, 1-50 chars)
+- `category` (optional, one of the supported categories)
+- `page` (optional, number, default `1`)
+- `limit` (optional, number, default `12`, max `100`)
 
-**Examples:**
+#### Example
 
-```
-GET /api/pokemons?page=1&limit=12                    → First 12 items
-GET /api/pokemons?page=2                             → Next 12 items
-GET /api/pokemons?category=Fire                      → All Fire types (paginated)
+```http
+GET /api/pokemons?page=1&limit=8&nameStartedWith=pi&category=Electric
 ```
 
-**Response:**
+#### Success response
 
 ```json
 {
   "success": true,
-  "data": [...],
-  "total": 151,
+  "data": [],
+  "total": 1,
   "page": 1,
-  "limit": 12,
-  "nextPage": 2
+  "limit": 8,
+  "nextPage": null
 }
 ```
 
 ### `GET /api/health`
 
-Health check endpoint.
+Returns API health status.
 
----
+## Supported Categories
 
-## Available Categories
+Fire, Water, Grass, Electric, Psychic, Ice, Dragon, Dark, Fairy, Normal, Fighting, Poison, Ground, Flying, Bug, Rock, Ghost, Steel
 
-Fire · Water · Grass · Electric · Psychic · Ice · Dragon · Dark · Fairy · Normal · Fighting · Poison · Ground · Flying · Bug · Rock · Ghost · Steel
+## Notes
 
----
+- Theme preference is stored under `theme-mode` in `localStorage`.
+- The server exports the Express app for deployment targets that need a handler export.
+- Rate limiter is enabled globally with a 15-minute window.
 
 ## License
 
-This project is licensed under the [MIT License](./LICENSE).
+Licensed under the [MIT License](./LICENSE).
