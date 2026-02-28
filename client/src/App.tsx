@@ -8,6 +8,7 @@ import FilterBar from "./components/FilterBar";
 import PokemonGrid from "./components/PokemonGrid";
 import Login1 from "./components/Login/Login1";
 import Login2 from "./components/Login/Login2";
+import OrderDashboard from "./components/Dashboard/OrderDashboard";
 
 function HomePage() {
   return (
@@ -52,7 +53,13 @@ const loginRoute2 = createRoute({
   component: Login2,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, loginRoute, loginRoute2]);
+const dashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dashboard",
+  component: OrderDashboard,
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, loginRoute, loginRoute2, dashboardRoute]);
 
 export const router = createRouter({ routeTree });
 

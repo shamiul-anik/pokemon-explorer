@@ -83,15 +83,22 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
+    event.preventDefault();
+
+    if (!validateInputs()) {
       return;
     }
+
+    if (emailError || passwordError) {
+      return;
+    }
+
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+    navigate({ to: '/dashboard' });
   };
 
   const validateInputs = () => {
@@ -285,7 +292,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => navigate({ to: '/' })}
+              onClick={() => navigate({ to: '/dashboard' })}
               startIcon={<AzureIcon />}
               sx={socialButtonSx}
             >
