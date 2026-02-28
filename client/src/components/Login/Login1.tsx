@@ -17,8 +17,8 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import Logo from '../../assets/logo.svg';
 import AzureIcon from './AzureIcon';
+import AppBrand from '../AppBrand';
 
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props;
@@ -89,17 +89,7 @@ export default function JoySignInSideTemplate() {
             component="header"
             sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}
           >
-            <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-              <IconButton variant="soft" color="primary" size="sm">
-                <Box
-                  component="img"
-                  src={Logo}
-                  alt="Pokemon Explorer logo"
-                  sx={{ width: 20, height: 20, display: 'block' }}
-                />
-              </IconButton>
-              <Typography level="title-lg">Pokemon Explorer</Typography>
-            </Box>
+            <AppBrand titleVariant="subtitle1" titleComponent="span" />
             <ColorSchemeToggle />
           </Box>
           <Box
@@ -194,7 +184,7 @@ export default function JoySignInSideTemplate() {
           </Box>
           <Box component="footer" sx={{ py: 3 }}>
             <Typography level="body-xs" sx={{ textAlign: 'center' }}>
-              (C) Pokemon Explorer {new Date().getFullYear()}
+              (C) {"Pok\u00e9mon Explorer"} {new Date().getFullYear()}
             </Typography>
           </Box>
         </Box>

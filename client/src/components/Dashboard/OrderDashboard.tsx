@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Chip,
   List,
@@ -27,6 +26,7 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import { useNavigate } from '@tanstack/react-router';
+import AppBrand from '../AppBrand';
 
 type OrderStatus = 'Paid' | 'Processing' | 'Cancelled';
 
@@ -82,11 +82,8 @@ export default function OrderDashboard() {
         <Grid size={{ xs: 12, lg: 3 }}>
           <Paper sx={{ ...shellCardSx, p: 2, position: { lg: 'sticky' }, top: { lg: 24 } }}>
             <Stack direction="row" spacing={1.5} alignItems="center" mb={2.5}>
-              <Avatar sx={{ bgcolor: '#1f9dff', color: '#061427', fontWeight: 700 }}>P</Avatar>
               <Box>
-                <Typography fontWeight={700} lineHeight={1.2}>
-                  Pokemon Explorer
-                </Typography>
+                <AppBrand titleVariant="subtitle1" titleComponent="span" />
                 <Typography variant="body2" color="rgba(206, 224, 246, 0.75)">
                   Order Dashboard
                 </Typography>

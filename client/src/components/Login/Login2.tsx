@@ -18,6 +18,7 @@ import ForgotPassword from './ForgotPassword';
 import AppTheme from './shared-theme/AppTheme';
 // import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import AzureIcon from './AzureIcon';
+import AppBrand from '../AppBrand';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -132,6 +133,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+          <AppBrand titleVariant="subtitle1" titleComponent="span" />
+        </Box>
         <Card variant="outlined">
           {/* <SitemarkIcon /> */}
           <Typography
