@@ -16,8 +16,8 @@ import { styled } from "@mui/material/styles";
 import { z } from "zod";
 import ForgotPassword from "./ForgotPassword";
 import AzureIcon from "./AzureIcon";
-import AppBrand from "../AppBrand";
-import ThemeToggle from "../ThemeToggle";
+import AppBrand from "../../../shared/components/AppBrand";
+import ThemeToggle from "../../../shared/components/ThemeToggle";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",

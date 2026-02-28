@@ -7,8 +7,8 @@ import {
   Box,
 } from "@mui/material";
 import { memo } from "react";
-import type { Pokemon } from "../types/pokemon";
-import { categoryColors } from "../theme/theme";
+import type { Pokemon } from "../../../shared/types/pokemon";
+import { categoryColors } from "../../../shared/theme/theme";
 
 interface PokemonCardProps {
   pokemon: Pokemon;

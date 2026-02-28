@@ -29,8 +29,8 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import { useNavigate } from '@tanstack/react-router';
-import AppBrand from '../AppBrand';
-import ThemeToggle from '../ThemeToggle';
+import AppBrand from '../../../shared/components/AppBrand';
+import ThemeToggle from '../../../shared/components/ThemeToggle';
 
 type OrderStatus = 'Paid' | 'Processing' | 'Cancelled';
 

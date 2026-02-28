@@ -11,7 +11,7 @@ import {
 import { Search, FilterList, Clear } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useFilterStore } from "../store/filterStore";
-import { CATEGORIES } from "../types/pokemon";
+import { CATEGORIES } from "../../../shared/types/pokemon";
 
 export default function FilterBar() {
   const { nameStartedWith, category, setNameStartedWith, setCategory, clearFilters } =

@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { Outlet, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
-import { useThemeStore } from "./store/themeStore";
-import { darkTheme, lightTheme } from "./theme/theme";
-import Layout from "./components/Layout";
-import FilterBar from "./components/FilterBar";
-import PokemonGrid from "./components/PokemonGrid";
-import Login1 from "./components/Login/Login";
-import OrderDashboard from "./components/Dashboard/OrderDashboard";
+import { useThemeStore } from "../shared/store/themeStore";
+import { darkTheme, lightTheme } from "../shared/theme/theme";
+import Layout from "../shared/components/Layout";
+import FilterBar from "../routes/home/components/FilterBar";
+import PokemonGrid from "../routes/home/components/PokemonGrid";
+import Login1 from "../routes/login/components/Login";
+import OrderDashboard from "../routes/dashboard/components/OrderDashboard";
 
 function HomePage() {
   return (

@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { fetchPokemons } from "../api/pokemons";
+import { fetchPokemons } from "../../../shared/api/pokemons";
 import { useFilterStore } from "../store/filterStore";
-import type { PokemonFilters } from "../types/pokemon";
+import type { PokemonFilters } from "../../../shared/types/pokemon";
 
 export function usePokemons(page: number, limit: number) {
   const nameStartedWith = useFilterStore((s) => s.nameStartedWith);
