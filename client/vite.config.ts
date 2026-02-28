@@ -15,16 +15,10 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: [
-            "react",
-            "react-dom",
-            "@mui/material",
-            "@mui/icons-material",
-            "@tanstack/react-query",
-            "axios",
-            "zustand",
-          ],
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
         },
       },
     },
