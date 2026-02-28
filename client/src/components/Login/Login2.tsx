@@ -142,9 +142,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               fontSize: 'clamp(2rem, 10vw, 2.15rem)',
               fontWeight: 700,
               color: '#f4f8ff',
+              textAlign: 'center',
             }}
           >
-            Sign in
+            Login
           </Typography>
           <Box
             component="form"
@@ -269,7 +270,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 },
               }}
             >
-              Sign in
+              Login
             </Button>
             <Link
               component="button"
@@ -296,25 +297,25 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               startIcon={<AzureIcon />}
               sx={socialButtonSx}
             >
-              Sign in with Azure AD
+              Login with Azure AD
             </Button>
             {/* <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Google')}
+              onClick={() => alert('Login with Google')}
               startIcon={<GoogleIcon />}
               sx={socialButtonSx}
             >
-              Sign in with Google
+              Login with Google
             </Button>
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
+              onClick={() => alert('Login with Facebook')}
               startIcon={<FacebookIcon />}
               sx={socialButtonSx}
             >
-              Sign in with Facebook
+              Login with Facebook
             </Button> */}
             <Typography sx={{ textAlign: 'center', color: '#d7e6fb' }}>
               Don&apos;t have an account?{' '}
