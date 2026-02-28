@@ -40,6 +40,8 @@ function SkeletonCard() {
   );
 }
 
+const LOADING_SKELETON_COUNT = 8;
+
 export default function PokemonGrid() {
   const nameStartedWith = useFilterStore((s) => s.nameStartedWith);
   const category = useFilterStore((s) => s.category);
@@ -66,10 +68,10 @@ export default function PokemonGrid() {
     setLimit(Number(event.target.value));
   };
 
-  if (isLoading) {
+  if (isLoading && !data) {
     return (
       <Grid container spacing={3}>
-        {Array.from({ length: 8 }).map((_, i) => (
+        {Array.from({ length: LOADING_SKELETON_COUNT }).map((_, i) => (
           <Grid key={i} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <SkeletonCard />
           </Grid>

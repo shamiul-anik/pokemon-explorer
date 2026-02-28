@@ -23,13 +23,25 @@ const commonOptions: ThemeOptions = {
         body: {
           transition: "background-color 0.25s ease, color 0.25s ease",
         },
+        "#root": {
+          transition: "background-color 0.25s ease, color 0.25s ease",
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          "*, *::before, *::after": {
+            animationDuration: "0.01ms !important",
+            animationIterationCount: "1 !important",
+            transitionDuration: "0.01ms !important",
+            scrollBehavior: "auto !important",
+          },
+        },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
           borderRadius: 20,
-          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.22s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.22s cubic-bezier(0.4, 0, 0.2, 1)",
         },
       },
     },

@@ -17,7 +17,10 @@ export default function AppBrand({
         sx={{
           fontSize: 32,
           color: "primary.main",
-          animation: "spin 3s linear infinite",
+          animation: "spin 8s linear infinite",
+          "@media (prefers-reduced-motion: reduce)": {
+            animation: "none",
+          },
           "@keyframes spin": {
             from: { transform: "rotate(0deg)" },
             to: { transform: "rotate(360deg)" },

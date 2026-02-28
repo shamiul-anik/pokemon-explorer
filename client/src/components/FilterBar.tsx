@@ -9,6 +9,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Search, FilterList, Clear } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import { useFilterStore } from "../store/filterStore";
 import { CATEGORIES } from "../types/pokemon";
 
@@ -16,7 +17,23 @@ export default function FilterBar() {
   const { nameStartedWith, category, setNameStartedWith, setCategory, clearFilters } =
     useFilterStore();
 
-  const hasFilters = nameStartedWith || category;
+  const [searchInput, setSearchInput] = useState(nameStartedWith);
+
+  useEffect(() => {
+    setSearchInput(nameStartedWith);
+  }, [nameStartedWith]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (searchInput !== nameStartedWith) {
+        setNameStartedWith(searchInput);
+      }
+    }, 220);
+
+    return () => window.clearTimeout(timer);
+  }, [searchInput, nameStartedWith, setNameStartedWith]);
+
+  const hasFilters = searchInput || category;
 
   return (
     <Box
@@ -29,7 +46,6 @@ export default function FilterBar() {
         p: 3,
         borderRadius: 3,
         backgroundColor: "background.paper",
-        backdropFilter: "blur(20px)",
         border: "1px solid",
         borderColor: "divider",
         boxShadow: (theme) =>
@@ -44,8 +60,8 @@ export default function FilterBar() {
         label="Search by Name"
         variant="outlined"
         size="small"
-        value={nameStartedWith}
-        onChange={(e) => setNameStartedWith(e.target.value)}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
         placeholder="e.g. Pi, Char..."
         slotProps={{
           input: {
@@ -82,15 +98,11 @@ export default function FilterBar() {
           variant="outlined"
           color="secondary"
           startIcon={<Clear />}
-          onClick={clearFilters}
-          sx={{
-            borderRadius: 2,
-            animation: "fadeIn 0.2s ease",
-            "@keyframes fadeIn": {
-              from: { opacity: 0, transform: "scale(0.9)" },
-              to: { opacity: 1, transform: "scale(1)" },
-            },
+          onClick={() => {
+            setSearchInput("");
+            clearFilters();
           }}
+          sx={{ borderRadius: 2 }}
         >
           Clear
         </Button>

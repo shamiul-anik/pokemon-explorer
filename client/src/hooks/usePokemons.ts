@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchPokemons } from "../api/pokemons";
 import { useFilterStore } from "../store/filterStore";
 import type { PokemonFilters } from "../types/pokemon";
@@ -14,6 +14,7 @@ export function usePokemons(page: number, limit: number) {
   return useQuery({
     queryKey: ["pokemons", filters, page, limit],
     queryFn: () => fetchPokemons(filters, page, limit),
+    placeholderData: keepPreviousData,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes garbage collection
     retry: 2,

@@ -6,6 +6,7 @@ import {
   Chip,
   Box,
 } from "@mui/material";
+import { memo } from "react";
 import type { Pokemon } from "../types/pokemon";
 import { categoryColors } from "../theme/theme";
 
@@ -14,7 +15,7 @@ interface PokemonCardProps {
   index: number;
 }
 
-export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
+function PokemonCard({ pokemon, index }: PokemonCardProps) {
   const chipColor = categoryColors[pokemon.category] || "#94A3B8";
 
   return (
@@ -30,7 +31,6 @@ export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
           theme.palette.mode === "dark"
             ? "linear-gradient(145deg, rgba(20, 24, 51, 0.9), rgba(30, 35, 70, 0.7))"
             : "linear-gradient(145deg, rgba(255,255,255,0.95), rgba(240,242,255,0.8))",
-        backdropFilter: "blur(20px)",
         border: "1px solid",
         borderColor: (theme) =>
           theme.palette.mode === "dark"
@@ -41,24 +41,15 @@ export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
             ? "0 8px 32px rgba(0,0,0,0.4)"
             : "0 4px 20px rgba(0,0,0,0.08)",
         "&:hover": {
-          transform: "translateY(-8px) scale(1.02)",
+          transform: "translateY(-4px) scale(1.01)",
           boxShadow: (theme) =>
             theme.palette.mode === "dark"
-              ? `0 20px 60px rgba(0,0,0,0.5), 0 0 30px ${chipColor}22`
-              : `0 12px 40px rgba(0,0,0,0.15), 0 0 20px ${chipColor}15`,
+              ? `0 14px 36px rgba(0,0,0,0.45), 0 0 16px ${chipColor}22`
+              : `0 8px 24px rgba(0,0,0,0.14), 0 0 10px ${chipColor}15`,
           borderColor: chipColor + "40",
         },
-        animation: `slideUp 0.4s ease ${index * 0.05}s both`,
-        "@keyframes slideUp": {
-          from: {
-            opacity: 0,
-            transform: "translateY(30px)",
-          },
-          to: {
-            opacity: 1,
-            transform: "translateY(0)",
-          },
-        },
+        transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+        willChange: "transform",
       }}
     >
       {/* Pokémon number badge */}
@@ -68,7 +59,6 @@ export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
           top: 12,
           right: 12,
           backgroundColor: "rgba(0,0,0,0.2)",
-          backdropFilter: "blur(8px)",
           borderRadius: 2,
           px: 1.5,
           py: 0.5,
@@ -96,6 +86,8 @@ export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
           component="img"
           image={pokemon.image}
           alt={pokemon.name}
+          loading={index < 8 ? "eager" : "lazy"}
+          decoding="async"
           sx={{
             position: "absolute",
             top: "10%",
@@ -103,10 +95,10 @@ export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
             width: "80%",
             height: "80%",
             objectFit: "contain",
-            transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))",
+            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.26))",
             "&:hover": {
-              transform: "scale(1.1) rotate(3deg)",
+              transform: "scale(1.06) rotate(2deg)",
             },
           }}
         />
@@ -149,3 +141,5 @@ export default function PokemonCard({ pokemon, index }: PokemonCardProps) {
     </Card>
   );
 }
+
+export default memo(PokemonCard);

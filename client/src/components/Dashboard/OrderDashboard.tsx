@@ -159,7 +159,7 @@ export default function OrderDashboard() {
                 },
               }}
             >
-              Back to Pokedex
+              Back to Home Page
             </Button>
             </Paper>
           </Grid>

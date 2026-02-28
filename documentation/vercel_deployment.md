@@ -51,7 +51,7 @@ Thanks to the `vercel.json` configuration:
 
 - Calls to `your-site.com/api/pokemons` will be handled by your **Express Server**.
 - Calls to `your-site.com/` will serve your **React App**.
-- Refresh logic is handled (Deep links like `your-site.com/pokedex` will correctly route to the React app).
+- Refresh logic is handled (Deep links like `your-site.com/pokemon-explorer` will correctly route to the React app).
 
 ---
 
