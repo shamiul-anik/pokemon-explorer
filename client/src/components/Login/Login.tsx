@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
+import { z } from "zod";
 import ForgotPassword from "./ForgotPassword";
 import AzureIcon from "./AzureIcon";
 import AppBrand from "../AppBrand";
@@ -50,7 +51,25 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
       : "radial-gradient(circle at 14% 18%, rgba(104, 160, 223, 0.28), transparent 38%), radial-gradient(circle at 90% 0%, rgba(106, 163, 227, 0.2), transparent 42%), linear-gradient(180deg, #d9e4f2 0%, #cfdceb 100%)",
 }));
 
+const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required.")
+    .email("Please enter a valid email address."),
+  password: z
+    .string()
+    .min(1, "Password is required.")
+    .min(6, "Password must be at least 6 characters long."),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+
 export default function Login1() {
+  const [formValues, setFormValues] = React.useState<LoginFormValues>({
+    email: "",
+    password: "",
+  });
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
@@ -67,37 +86,51 @@ export default function Login1() {
     setOpen(false);
   };
 
-  const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
+  const setFieldError = (field: keyof LoginFormValues, message?: string) => {
+    if (field === "email") {
+      setEmailError(Boolean(message));
+      setEmailErrorMessage(message ?? "");
+      return;
+    }
 
-    let isValid = true;
+    if (field === "password") {
+      setPasswordError(Boolean(message));
+      setPasswordErrorMessage(message ?? "");
+    }
+  };
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
+  const validateInputs = (values: LoginFormValues) => {
+    const result = loginSchema.safeParse(values);
+
+    if (result.success) {
       setEmailError(false);
       setEmailErrorMessage("");
-    }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
-      isValid = false;
-    } else {
       setPasswordError(false);
       setPasswordErrorMessage("");
+      return true;
     }
 
-    return isValid;
+    const flattenedErrors = result.error.flatten().fieldErrors;
+    setFieldError("email", flattenedErrors.email?.[0]);
+    setFieldError("password", flattenedErrors.password?.[0]);
+
+    return false;
+  };
+
+  const validateSingleField = (field: keyof LoginFormValues, value: string) => {
+    const fieldSchema = loginSchema.shape[field];
+    const result = fieldSchema.safeParse(value);
+    setFieldError(field, result.success ? undefined : result.error.issues[0]?.message);
+  };
+
+  const handleInputChange = (field: keyof LoginFormValues, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!validateInputs()) {
+    if (!validateInputs(formValues)) {
       return;
     }
 
@@ -157,6 +190,9 @@ export default function Login1() {
               autoComplete="email"
               autoFocus
               required
+              value={formValues.email}
+              onChange={(event) => handleInputChange("email", event.target.value)}
+              onBlur={(event) => validateSingleField("email", event.target.value)}
               fullWidth
               variant="outlined"
               color={emailError ? "error" : "primary"}
@@ -199,6 +235,9 @@ export default function Login1() {
               id="password"
               autoComplete="current-password"
               required
+              value={formValues.password}
+              onChange={(event) => handleInputChange("password", event.target.value)}
+              onBlur={(event) => validateSingleField("password", event.target.value)}
               fullWidth
               variant="outlined"
               color={passwordError ? "error" : "primary"}
@@ -246,7 +285,6 @@ export default function Login1() {
             type="submit"
             fullWidth
             variant="contained"
-            onClick={validateInputs}
             sx={{
               color: "background.paper",
               fontWeight: 700,
