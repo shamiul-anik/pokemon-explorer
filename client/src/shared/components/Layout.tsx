@@ -1,5 +1,6 @@
 import { AppBar, Toolbar, Container, Box, Button } from "@mui/material";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import { Link as RouterLink } from "@tanstack/react-router";
 import ThemeToggle from "./ThemeToggle";
 import AppBrand from "./AppBrand";
@@ -54,6 +55,23 @@ export default function Layout({ children }: LayoutProps) {
               }}
             >
               Login
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/dashboard"
+              variant="contained"
+              startIcon={<DashboardRoundedIcon />}
+              sx={{
+                textTransform: "none",
+                backgroundColor: "text.primary",
+                color: "background.paper",
+                fontWeight: 600,
+                "&:hover": {
+                  backgroundColor: "secondary.light",
+                },
+              }}
+            >
+              Dashboard
             </Button>
           </Box>
         </Toolbar>
