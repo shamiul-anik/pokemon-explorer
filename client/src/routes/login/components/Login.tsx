@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import { z } from "zod";
 import ForgotPassword from "./ForgotPassword";
 import AzureIcon from "./AzureIcon";
@@ -285,6 +286,7 @@ export default function Login1() {
             type="submit"
             fullWidth
             variant="contained"
+            startIcon={<LoginRoundedIcon />}
             sx={{
               color: "background.paper",
               fontWeight: 700,

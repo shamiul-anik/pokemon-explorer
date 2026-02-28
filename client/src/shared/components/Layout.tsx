@@ -1,4 +1,6 @@
-import { AppBar, Toolbar, Container, Box } from "@mui/material";
+import { AppBar, Toolbar, Container, Box, Button } from "@mui/material";
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import { Link as RouterLink } from "@tanstack/react-router";
 import ThemeToggle from "./ThemeToggle";
 import AppBrand from "./AppBrand";
 
@@ -34,7 +36,26 @@ export default function Layout({ children }: LayoutProps) {
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <AppBrand />
-          <ThemeToggle />
+          <Box sx={{ display: "flex", alignItems: "center", ml: "auto", gap: 2 }}>
+            <ThemeToggle />
+            <Button
+              component={RouterLink}
+              to="/login"
+              variant="contained"
+              startIcon={<LoginRoundedIcon />}
+              sx={{
+                textTransform: "none",
+                backgroundColor: "text.primary",
+                color: "background.paper",
+                fontWeight: 600,
+                "&:hover": {
+                  backgroundColor: "secondary.light",
+                },
+              }}
+            >
+              Login
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
