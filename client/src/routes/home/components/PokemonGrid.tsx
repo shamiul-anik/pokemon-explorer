@@ -156,7 +156,7 @@ export default function PokemonGrid() {
           Showing {shownCount} of {total} Pokemon
         </Typography>
 
-        <FormControl size="small" sx={{ ml: "auto", minWidth: 130 }}>
+        <FormControl size="small" sx={{ ml: "auto", minWidth: 100 }}>
           <InputLabel id="items-per-page-label">Items</InputLabel>
           <Select<number>
             labelId="items-per-page-label"
