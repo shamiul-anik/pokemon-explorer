@@ -315,6 +315,6 @@ Licensed under the [MIT License](./LICENSE).
 
 <div align="center">
 
-**Made with ❤️ and TypeScript**
+**Made with ❤️ and TypeScript by Shamiul**
 
 </div>
