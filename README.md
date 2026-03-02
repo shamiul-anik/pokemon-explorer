@@ -1,9 +1,10 @@
 # Pokemon Explorer
 
-A full-stack TypeScript monorepo for browsing the original 151 Pokemon, with a modern MUI UI, route-based pages, and an Express API.
+A full-stack TypeScript monorepo for browsing the original 151 Pokemon, with a modern MUI UI, route-based pages, and an Express API. Deployable to Vercel.
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite)
 ![MUI](https://img.shields.io/badge/MUI-7-007FFF?logo=mui)
 ![Express](https://img.shields.io/badge/Express-5-000000?logo=express)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -27,33 +28,39 @@ A full-stack TypeScript monorepo for browsing the original 151 Pokemon, with a m
 
 ### Client
 
-- React 19 + Vite
-- TypeScript
+- React 19 + Vite 8
+- TypeScript 5.9
 - Material UI (`@mui/material`, `@mui/icons-material`, `@mui/joy`)
 - TanStack Router
 - TanStack Query
 - Zustand
 - Axios
-- Zod
+- Zod 4
 
 ### Server
 
 - Node.js + Express 5
-- TypeScript
-- Zod
+- TypeScript 5.9
+- Zod 3
 - express-rate-limit
 - cors
+- tsx (dev runner)
 
 ### Workspace / Tooling
 
-- pnpm workspaces
+- pnpm 10 workspaces
 - concurrently (run client and server together)
+- ESLint 9 (flat config) with TypeScript, React Hooks, and React Refresh plugins
+- Vercel deployment (`vercel.json`)
 
 ## Project Structure
 
 ```text
 pokemon-explorer/
 |- client/
+|  |- backup/
+|  |  `- backupconfig.js
+|  |- public/
 |  |- src/
 |  |  |- app/
 |  |  |  `- router.tsx
@@ -73,18 +80,27 @@ pokemon-explorer/
 |  |     |- store/
 |  |     |- theme/
 |  |     `- types/
+|  |- eslint.config.js
 |  |- package.json
 |  `- vite.config.ts
 |- server/
 |  |- src/
 |  |  |- data/
 |  |  |- middleware/
+|  |  |  |- rateLimiter.ts
+|  |  |  `- validate.ts
 |  |  |- routes/
 |  |  |- schemas/
 |  |  `- index.ts
+|  |- fetch-pokemons.ts
 |  `- package.json
+|- documentation/
+|  |- step_by_step_explanation.md
+|  |- vercel_deployment.md
+|  `- walkthrough.md
 |- package.json
-`- pnpm-workspace.yaml
+|- pnpm-workspace.yaml
+`- vercel.json
 ```
 
 ## Routing
@@ -178,6 +194,17 @@ GET /api/pokemons?page=1&limit=8&nameStartedWith=pi&category=Electric
 
 Returns API health status.
 
+## Deployment
+
+The project includes a `vercel.json` configuration for deploying to [Vercel](https://vercel.com):
+
+- **Server** is built with `@vercel/node`
+- **Client** is built as a static site with `@vercel/static-build`
+- API routes (`/api/*`) are rewritten to the server entry point
+- All other routes are served from the client build
+
+See [`documentation/vercel_deployment.md`](./documentation/vercel_deployment.md) for detailed deployment instructions.
+
 ## Supported Categories
 
 Fire, Water, Grass, Electric, Psychic, Ice, Dragon, Dark, Fairy, Normal, Fighting, Poison, Ground, Flying, Bug, Rock, Ghost, Steel
@@ -187,6 +214,15 @@ Fire, Water, Grass, Electric, Psychic, Ice, Dragon, Dark, Fairy, Normal, Fightin
 - Theme preference is stored under `theme-mode` in `localStorage`.
 - The server exports the Express app for deployment targets that need a handler export.
 - Rate limiter is enabled globally with a 15-minute window.
+- The `client/backup/` directory contains an alternate ESLint config with Prettier integration.
+
+## Documentation
+
+Additional docs are available in the `documentation/` folder:
+
+- [`step_by_step_explanation.md`](./documentation/step_by_step_explanation.md) - Detailed implementation walkthrough
+- [`vercel_deployment.md`](./documentation/vercel_deployment.md) - Vercel deployment guide
+- [`walkthrough.md`](./documentation/walkthrough.md) - Project walkthrough
 
 ## License
 
